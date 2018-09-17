@@ -39,12 +39,12 @@ Common variables referenced in naming standards
 | AWS Resource     | Resource Naming                          | Comment | Example                          |
 |:-----------------|:-----------------------------------------|:--------|:---------------------------------|
 | VPC              | `<vpc_name>-vpc`                         |         | `mycloud-vpc`                    |
-| Subnets          | `<vpc_name>-private-<availability_zone>` |         | `mycloud-vpc-private-us-east-1b` |
-|                  | `<vpc_name>-public`                      |         | `mycloud-vpc-public`             |
-| Route Tables     | `<vpc_name>-private-<availability_zone>` |         | `mycloud-vpc-private-us-east-1b` |
-|                  | `<vpc_name>-public`                      |         | `mycloud-vpc-public`             |
-| Internet Gateway | `<vpc_name>-igw`                         |         | `mycloud-vpc-igw`                |
-| Nat Gateway      | `<vpc_name>-nat-<availability_zone>`     |         | `mycloud-vpc-nat-us-east-1b`     |
+| Subnets          | `<vpc_name>-private-<availability_zone>` |         | `mycloud-private-us-east-1b` |
+|                  | `<vpc_name>-public`                      |         | `mycloud-public`             |
+| Route Tables     | `<vpc_name>-private-<availability_zone>` |         | `mycloud-private-us-east-1b` |
+|                  | `<vpc_name>-public`                      |         | `mycloud-public`             |
+| Internet Gateway | `<vpc_name>-igw`                         |         | `mycloud-igw`                |
+| Nat Gateway      | `<vpc_name>-nat-<availability_zone>`     |         | `mycloud-nat-us-east-1b`     |
 
 
 ## 1. Create a `VPC`
