@@ -24,6 +24,29 @@ Common commands:
 
 *Based on [standard module structure](https://www.terraform.io/docs/modules/create.html#standard-module-structure) guidelines*
 
+## :triangular_ruler: Naming Convention
+
+Common variables referenced in naming standards
+
+| Variable              | RegExp                          | Example                                                     |
+|:----------------------|:--------------------------------|:------------------------------------------------------------|
+| `<availability_zone>` | `[a-z]{2}-[a-z]{1,}-[1-2][a-f]` | `us-east-1a`, `us-west-2c`, `eu-west-1a`, `ap-northeast-1c` |
+
+---
+
+## {{% fontawesome amazon %}} AWS - Resource Naming Standards
+
+| AWS Resource     | Resource Naming                          | Comment | Example                          |
+|:-----------------|:-----------------------------------------|:--------|:---------------------------------|
+| VPC              | `<vpc_name>-vpc`                         |         | `mycloud-vpc`                    |
+| Subnets          | `<vpc_name>-private-<availability_zone>` |         | `mycloud-vpc-private-us-east-1b` |
+|                  | `<vpc_name>-public`                      |         | `mycloud-vpc-public`             |
+| Route Tables     | `<vpc_name>-private-<availability_zone>` |         | `mycloud-vpc-private-us-east-1b` |
+|                  | `<vpc_name>-public`                      |         | `mycloud-vpc-public`             |
+| Internet Gateway | `<vpc_name>-igw`                         |         | `mycloud-vpc-igw`                |
+| Nat Gateway      | `<vpc_name>-nat-<availability_zone>`     |         | `mycloud-vpc-nat-us-east-1b`     |
+
+
 ## 1. Create a `VPC`
 
 The really first stage for bootstrapping an AWS account is to create a `VPC`
