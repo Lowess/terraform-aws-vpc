@@ -1,25 +1,22 @@
 # Terraform AWS VPC
 
-## :package: Install Terraform
+## Module inputs
 
-Install Terraform by following the [documentation](https://www.terraform.io/downloads)
+| Name                | Description                                                                              |  Type  | Default | Required |
+| :------------------ | :--------------------------------------------------------------------------------------- | :----: | :-----: | :------: |
+| azs                 | VPC AZs                                                                                  |  list  |    -    |   yes    |
+| cidr                | VPC Cidr Block                                                                           | string |    -    |   yes    |
+| name                | VPC Name                                                                                 | string |    -    |   yes    |
+| public_key          | EC2 Public key used to provision servers                                                 | string |    -    |   yes    |
+| tags                | Default set of tags to apply to VPC resources                                            |  map   | `<map>` |    no    |
+| enable_bastion_host | If true, A bastion / jump host will be started in a public subnet                        | string | `true`  |    no    |
+| enable_managed_nat  | If true, Managed NAT Gateways will be used, otherwise EC2 NAT instances will be spawn up | string | `false` |    no    |
 
-Make sure `terraform` is working properly
+
+## Module usage example
 
 ```hcl
-$ terraform
-Usage: terraform [--version] [--help] <command> [args]
 
-The available commands for execution are listed below.
-The most common, useful commands are shown first, followed by
-less common or more advanced commands. If you're just getting
-started with Terraform, stick with the common commands. For the
-other commands, please read the help and docs before usage.
-
-Common commands:
-    apply              Builds or changes infrastructure
-    console            Interactive console for Terraform interpolations
-# ...
 ```
 
 *Based on [standard module structure](https://www.terraform.io/docs/modules/create#standard-module-structure) guidelines*
@@ -29,18 +26,18 @@ Common commands:
 Common variables referenced in naming standards
 
 | Variable              | RegExp                          | Example                                                     |
-|:----------------------|:--------------------------------|:------------------------------------------------------------|
+| :-------------------- | :------------------------------ | :---------------------------------------------------------- |
 | `<availability_zone>` | `[a-z]{2}-[a-z]{1,}-[1-2][a-f]` | `us-east-1a`, `us-west-2c`, `eu-west-1a`, `ap-northeast-1c` |
 
 ---
 
 ## AWS - Resource Naming Standards
 
-| AWS Resource     | Resource Naming                          | Comment | Example                          |
-|:-----------------|:-----------------------------------------|:--------|:---------------------------------|
-| VPC              | `<vpc_name>-vpc`                         |         | `mycloud-vpc`                    |
+| AWS Resource     | Resource Naming                          | Comment | Example                      |
+| :--------------- | :--------------------------------------- | :------ | :--------------------------- |
+| VPC              | `<vpc_name>-vpc`                         |         | `mycloud-vpc`                |
 | Subnets          | `<vpc_name>-private-<availability_zone>` |         | `mycloud-private-us-east-1b` |
-|                  | `<vpc_name>-public-<availability_zone>`                      |         | `mycloud-public-us-east-1b`             |
+|                  | `<vpc_name>-public-<availability_zone>`  |         | `mycloud-public-us-east-1b`  |
 | Route Tables     | `<vpc_name>-private-<availability_zone>` |         | `mycloud-private-us-east-1b` |
 |                  | `<vpc_name>-public`                      |         | `mycloud-public`             |
 | Internet Gateway | `<vpc_name>-igw`                         |         | `mycloud-igw`                |
