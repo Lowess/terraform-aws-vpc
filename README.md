@@ -69,6 +69,7 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
 
 * [aws_internet_gateway](https://www.terraform.io/docs/providers/aws/r/internet_gateway.html)
 * [aws_ami](https://www.terraform.io/docs/providers/aws/d/ami.html)
+    * > :point_up: Use the following AMI Name `amzn-ami-vpc-nat-2018.03.0.2021*` provided by Amazon (owners = `amazon`)
 * [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
     * > :warning: Make sure you use `vpc_security_group_ids` and not `security_groups`
 * [aws_key_pair](https://www.terraform.io/docs/providers/aws/r/key_pair.html)
