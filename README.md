@@ -74,6 +74,7 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
     * > :warning: Make sure you use `vpc_security_group_ids` and not `security_groups`
 * [aws_key_pair](https://www.terraform.io/docs/providers/aws/r/key_pair.html)
 * [aws_instance](https://www.terraform.io/docs/providers/aws/r/instance.html)
+    * > :warning: Make sure to set `source_dest_check = false`. [Read more about it here](https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/VPC_NAT_Instance.html#EIP_Disable_SrcDestCheck)
 * [aws_eip](https://www.terraform.io/docs/providers/aws/r/eip.html)
 * [aws_eip_association](https://www.terraform.io/docs/providers/aws/r/eip_association.html)
 
