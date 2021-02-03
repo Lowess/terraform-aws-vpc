@@ -70,7 +70,7 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
 * [aws_internet_gateway](https://www.terraform.io/docs/providers/aws/r/internet_gateway.html)
 * [aws_ami](https://www.terraform.io/docs/providers/aws/d/ami.html)
 * [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
-    * > :warn: Make sure you use `vpc_security_group_ids` and not `security_groups`
+    * > :warning: Make sure you use `vpc_security_group_ids` and not `security_groups`
 * [aws_key_pair](https://www.terraform.io/docs/providers/aws/r/key_pair.html)
 * [aws_instance](https://www.terraform.io/docs/providers/aws/r/instance.html)
 * [aws_eip](https://www.terraform.io/docs/providers/aws/r/eip.html)
