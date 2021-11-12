@@ -90,3 +90,13 @@ Finaly, link the infrastructure together by creating `route tables` and `routes`
 * [aws_route_table_association](https://www.terraform.io/docs/providers/aws/r/route_table_association.html)
 
 ![VPC AZs Subnets GW Routes](./docs/5-vpc-azs-subnets-gw-routing.png)
+
+## Tips and Tricks
+
+* Connect to AWS private instance using a NAT server as a jumphost
+
+```sh
+eval $(ssh-agent)
+ssh-add <keypair.pem>
+ssh -i key-pair/aws-educate-student.pem -J ec2-user@<public-NAT-IP> -A ec2-user@<private-EC2-IP>
+```
