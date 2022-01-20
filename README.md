@@ -2,7 +2,7 @@
 
 ## :package: Install Terraform
 
-Install Terraform by following the [documentation](https://www.terraform.io/downloads.html)
+Install Terraform by following the [documentation](https://www.terraform.io/downloads)
 
 Make sure `terraform` is working properly
 
@@ -22,7 +22,7 @@ Common commands:
 # ...
 ```
 
-*Based on [standard module structure](https://www.terraform.io/docs/modules/create.html#standard-module-structure) guidelines*
+*Based on [standard module structure](https://www.terraform.io/docs/modules/create#standard-module-structure) guidelines*
 
 ## :triangular_ruler: Naming Convention
 
@@ -59,7 +59,7 @@ The really first stage for bootstrapping an AWS account is to create a `VPC`
 
 Then create `public` and `private` subnets in each `AZs` (`us-east-1a`, `us-east-1b`, `us-east-1c`)
 
-* [aws_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet.html)
+* [aws_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet)
 
 ![VPC AZs Subnets](./docs/3-vpc-azs-subnets.png)
 
@@ -67,17 +67,17 @@ Then create `public` and `private` subnets in each `AZs` (`us-east-1a`, `us-east
 
 Create one `internet gateway` so that the `VPC` can communicate with the outisde world. For instances located in `private` subnets, we will need `NAT` instances to be setup in each `availability zones`
 
-* [aws_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway.html)
-* [aws_ami](https://www.terraform.io/docs/providers/aws/d/ami.html)
+* [aws_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway)
+* [aws_ami](https://www.terraform.io/docs/providers/aws/d/ami)
     * > :point_up: Use the following AMI Name `amzn-ami-vpc-nat-2018.03.0.2021*` provided by Amazon (owners = `amazon`)
 * [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
     * > :warning: Do not use inline `ingress` or `egress`, use [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule)
-* [aws_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair.html)
-* [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance.html)
+* [aws_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair)
+* [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
     * > :warning: Make sure you use `vpc_security_group_ids` and not `security_groups`
-    * > :warning: Make sure to set `source_dest_check = false`. [Read more about it here](https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/VPC_NAT_Instance.html#EIP_Disable_SrcDestCheck)
-* [aws_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip.html)
-* [aws_eip_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association.html)
+    * > :warning: Make sure to set `source_dest_check = false`. [Read more about it here](https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/VPC_NAT_Instance#EIP_Disable_SrcDestCheck)
+* [aws_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
+* [aws_eip_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association)
 
 ![VPC AZs Subnets GW](./docs/4-vpc-azs-subnets-gw.png)
 
@@ -85,9 +85,9 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
 
 Finaly, link the infrastructure together by creating `route tables` and `routes` so that servers from `public` and `private` subnets can send their traffic to the respective gateway, either the `internet gateway` or the `NAT` ones.
 
-* [aws_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table.html)
-* [aws_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route.html)
-* [aws_route_table_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association.html)
+* [aws_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table)
+* [aws_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route)
+* [aws_route_table_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association)
 
 ![VPC AZs Subnets GW Routes](./docs/5-vpc-azs-subnets-gw-routing.png)
 
