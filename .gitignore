@@ -18,5 +18,5 @@ crash.log
 #
 *.tfvars
 
-
+id_rsa*
 # End of https://www.gitignore.io/api/terraform
