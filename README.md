@@ -62,17 +62,10 @@ Then create `public` and `private` subnets in each `AZs` (`us-east-1a`, `us-east
 
 ## 3. Create `internet` and `nat` Gateways
 
-Create one `internet gateway` so that the `VPC` can communicate with the outisde world. For instances located in `private` subnets, we will need `NAT` instances to be setup in each `availability zones`
+Create one `internet gateway` so that the `VPC` can communicate with the outisde world. For instances located in `private` subnets, we will need `NAT` gateways to be setup in each `availability zones`
 
 * [aws_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway)
-* [aws_ami](https://www.terraform.io/docs/providers/aws/d/ami)
-    * > :point_up: Use the following AMI Name `amzn-ami-vpc-nat-2018.03.0.2021*` provided by Amazon (owners = `amazon`)
-* [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
-    * > :warning: Do not use inline `ingress` or `egress`, use [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule)
-* [aws_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair)
-* [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
-    * > :warning: Make sure you use `vpc_security_group_ids` and not `security_groups`
-    * > :warning: Make sure to set `source_dest_check = false`. [Read more about it here](https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/VPC_NAT_Instance#EIP_Disable_SrcDestCheck)
+* [aws_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
 * [aws_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
 * [aws_eip_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association)
 
@@ -80,7 +73,7 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
 
 ## 4. Create `route tables` and `routes`
 
-Finaly, link the infrastructure together by creating `route tables` and `routes` so that servers from `public` and `private` subnets can send their traffic to the respective gateway, either the `internet gateway` or the `NAT` ones.
+Finally, link the infrastructure together by creating `route tables` and `routes` so that servers from `public` and `private` subnets can send their traffic to the respective gateway, either the `internet gateway` or the `NAT` ones.
 
 * [aws_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table)
 * [aws_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route)
@@ -90,7 +83,7 @@ Finaly, link the infrastructure together by creating `route tables` and `routes`
 
 ## Tips and Tricks
 
-* Connect to AWS private instance using a NAT server as a jumphost
+* Connect to AWS private instance using a NAT server as a jump-host
 
 ```sh
 eval $(ssh-agent)

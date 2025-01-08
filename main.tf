@@ -8,8 +8,7 @@
 
 
 provider "aws" {
-  region  = var.aws_region
-  profile = var.aws_profile
+  region = var.aws_region
 }
 
 locals {
@@ -42,15 +41,15 @@ resource "aws_subnet" "private" {
   for_each          = local.azs_with_index
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = cidrsubnet(var.cidr, 4, each.value)
-  availability_zone = each.key
+  availability_zone = "${var.aws_region}${each.key}"
 
   tags = merge(
     var.tags,
     {
-      "Name" = format("%s-private-%s", var.name, each.key)
+      "Name" = format("%s-private-%s%s", var.name, var.aws_region, each.key)
     },
     {
-      "TerraformId" = format("%s-private-%s", var.name, each.key)
+      "TerraformId" = format("%s-private-%s%s", var.name, var.aws_region, each.key)
     },
     {
       "Tier" = "private"
@@ -63,16 +62,16 @@ resource "aws_subnet" "public" {
   for_each                = local.azs_with_index
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = cidrsubnet(var.cidr, 4, 15 - each.value)
-  availability_zone       = each.key
+  availability_zone       = "${var.aws_region}${each.key}"
   map_public_ip_on_launch = true
 
   tags = merge(
     var.tags,
     {
-      "Name" = format("%s-public-%s", var.name, each.key)
+      "Name" = format("%s-public-%s%s", var.name, var.aws_region, each.key)
     },
     {
-      "TerraformId" = format("%s-public-%s", var.name, each.key)
+      "TerraformId" = format("%s-public-%s%s", var.name, var.aws_region, each.key)
     },
     {
       "Tier" = "public"
@@ -98,98 +97,27 @@ resource "aws_internet_gateway" "igw" {
   )
 }
 
-# Create NAT Gateway Instances - manual method
-
-data "aws_ami" "nat" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-vpc-nat-hvm-*-x86_64-ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-resource "aws_key_pair" "nat" {
-  key_name   = "ops"
-  public_key = var.public_key
-}
-
-resource "aws_security_group" "nat" {
-  name        = "nat-traffic"
-  description = "Allow NAT traffic"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    description = "NAT Traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
-  }
-
-  ingress {
-    description = "SSH only"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_nat_gateway" "nat" {
+  for_each      = local.azs_with_index
+  allocation_id = aws_eip.nat[each.key].id
+  subnet_id     = aws_subnet.public[each.key].id
 
   tags = {
-    Name = "nat-traffic"
+    "Name" = format("%s-nat-%s%s", var.name, var.aws_region, each.key)
   }
-}
 
-resource "aws_instance" "nat" {
-  for_each          = local.azs_with_index
-  subnet_id         = aws_subnet.public[each.key].id
-  ami               = data.aws_ami.nat.id
-  key_name          = aws_key_pair.nat.key_name
-  instance_type     = "t2.micro"
-  source_dest_check = false
-
-  vpc_security_group_ids = [
-    aws_security_group.nat.id
-  ]
-
-  tags = merge(
-    var.tags,
-    {
-      "Name" = format("%s-nat-%s", var.name, each.key)
-    },
-    {
-      "TerraformId" = format("%s-nat-%s", var.name, each.key)
-    },
-  )
-
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
   depends_on = [
     aws_internet_gateway.igw,
-    aws_route_table_association.public,
+    aws_route.public_igw_world
   ]
 }
+
 
 resource "aws_eip" "nat" {
   for_each = local.azs_with_index
   vpc      = true
-}
-
-resource "aws_eip_association" "nat" {
-  for_each      = aws_instance.nat
-  instance_id   = each.value.id
-  allocation_id = aws_eip.nat[each.key].id
 }
 
 ########################################################################################################################
@@ -238,7 +166,7 @@ resource "aws_route" "private_instance_ngw_world" {
   for_each               = local.azs_with_index
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  instance_id            = aws_instance.nat[each.key].id
+  nat_gateway_id         = aws_nat_gateway.nat[each.key].id
 }
 
 # Associate route table with subnets

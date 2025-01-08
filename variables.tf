@@ -1,8 +1,8 @@
 variable "aws_region" {
+  type    = string
+  default = "us-east-1"
 }
 
-variable "aws_profile" {
-}
 
 variable "name" {
   type        = string
@@ -17,11 +17,6 @@ variable "azs" {
 variable "cidr" {
   type        = string
   description = "VPC Cidr Block"
-}
-
-variable "public_key" {
-  type        = string
-  description = "EC2 Public key used to provision servers"
 }
 
 variable "tags" {
