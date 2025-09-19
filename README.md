@@ -70,7 +70,6 @@ Create one `internet gateway` so that the `VPC` can communicate with the outisde
 * [aws_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway)
 * [aws_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
 * [aws_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
-* [aws_eip_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association)
 
 ![VPC AZs Subnets GW](./docs/4-vpc-azs-subnets-gw.png)
 
